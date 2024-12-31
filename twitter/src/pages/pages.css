@@ -1,0 +1,32 @@
+.app {
+  display: flex;
+  justify-content: center;
+  margin: 25px 200px;
+}
+
+.page {
+  flex: 0.6;
+  text-align: center;
+  padding: 0 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profilePage {
+  flex: 0.6;
+  border-right: 1px solid var(--twitter-background2);
+  min-width: fit-content;
+  overflow-y: scroll;
+}
+
+.profilePage::-webkit-scrollbar {
+  display: none;
+}
+
+.pageTitle {
+  color: var(--twitter-color);
+  text-align: center;
+  font-size: 30px;
+  padding: 0 20px;
+}

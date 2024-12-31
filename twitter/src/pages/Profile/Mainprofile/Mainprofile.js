@@ -1,0 +1,237 @@
+import React, { useState, useEffect } from "react";
+import Posts from "../Posts/Posts";
+import { useNavigate } from "react-router-dom";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import CenterFocusWeakIcon from "@mui/icons-material/CenterFocusWeak";
+import LockResetIcon from "@mui/icons-material/LockReset";
+import MyLocationIcon from "@mui/icons-material/MyLocation";
+import AddLinkIcon from "@mui/icons-material/AddLink";
+import Editprofile from "../Editprofile/Editprofile";
+import axios from "axios"
+import useLoggedinuser from "../../../hooks/useLoggedinuser"
+
+const Mainprofile = ({ user }) => {
+  const navigate = useNavigate();
+  const [isloading, setisloading] = useState(false);
+  const [loggedinuser] = useLoggedinuser();
+  const username = user?.email?.split("@")[0];
+  const [post, setpost] = useState([]);
+
+  useEffect(()=>{
+      fetch(`http://localhost:5000/userpost?email=${user?.email}`)
+      .then(res=>res.json())
+      .then(data=>{
+        setpost(data)
+      })
+    }, [user.email])
+
+    const handleuploadcoverimage=(e)=>{
+      setisloading(true);
+    const image = e.target.files[0];
+    const formData = new FormData();
+    formData.set("image", image);
+    axios
+      .post(
+        "https://api.imgbb.com/1/upload?key=e3709d914aa7cc919b6753c5b00b52ce",
+        formData
+      )
+      .then((res) => {
+        const url = res.data.data.display_url;
+        // console.log(res.data.data.display_url);
+        const usercoverimage={
+          email:user?.email,
+          coverImage:url
+        }
+        setisloading(false);
+        if(url){
+          fetch(`http://localhost:5000/userupdate/${user?.email}`, {
+            method:"PATCH",
+            headers:{
+              'content-type':"application/json"
+            },
+            body:JSON.stringify(usercoverimage)
+          })
+          .then((res)=>res.json())
+          .then((data)=>{
+            console.log("done", data);
+          })
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+        window.alert(e)
+        setisloading(false)
+      });
+    }
+
+    const handleuploadprofileimage=(e)=>{
+      setisloading(true);
+    const image = e.target.files[0];
+    const formData = new FormData();
+    formData.set("image", image);
+    axios
+      .post(
+        "https://api.imgbb.com/1/upload?key=e3709d914aa7cc919b6753c5b00b52ce",
+        formData
+      )
+      .then((res) => {
+        const url = res.data.data.display_url;
+        // console.log(res.data.data.display_url);
+        const userprofileimage={
+          email:user?.email,
+          profileImage:url
+        }
+        setisloading(false);
+        if(url){
+          fetch(`http://localhost:5000/userupdate/${user?.email}`, {
+            method:"PATCH",
+            headers:{
+              'content-type':"application/json"
+            },
+            body:JSON.stringify(userprofileimage)
+          })
+          .then((res)=>res.json())
+          .then((data)=>{
+            console.log("done", data);
+          })
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+        window.alert(e)
+        setisloading(false)
+      });
+    }
+  
+  // const data = [
+  //   {
+  //     _id: "1",
+  //     name: "Jane Doe",
+  //     username: "@jane_doe",
+  //     profilePhoto: "https://example.com/profiles/jane.jpg",
+  //     post: "Exploring the new features in JavaScript! 🚀 #coding #JavaScript",
+  //     photo: "https://example.com/posts/javascript.png",
+  //   },
+  //   {
+  //     _id: "2",
+  //     name: "John Smith",
+  //     username: "@john_smith",
+  //     profilePhoto: "https://example.com/profiles/john.jpg",
+  //     post: "Excited about the latest tech trends in 2024! 📱 #technology #innovation",
+  //     photo: "https://example.com/posts/tech2024.png",
+  //   },
+  //   {
+  //     _id: "3",
+  //     name: "Emily Rose",
+  //     username: "@emily_rose",
+  //     profilePhoto: "https://example.com/profiles/emily.jpg",
+  //     post: "Learning Python has been so much fun! 🐍 #Python #programming",
+  //     photo: "https://example.com/posts/python.png",
+  //   },
+  // ];
+
+  return (
+    <div>
+      <ArrowBackIcon className="arrow-icon" onClick={() => navigate("/")} />
+      <h4 className="heading-4">{username}</h4>
+      <div className="mainprofile">
+        <div className="profile-bio">
+          {
+            <div>
+              <div className="coverImageContainer">
+                <img
+                  src={
+                    loggedinuser[0]?.coverImage
+                      ? loggedinuser[0].coverImage
+                      : user && user.photoURL
+                  }
+                  alt=""
+                  className="coverImage"
+                />
+                <div className="hoverCoverImage">
+                  <div className="imageIcon">
+                    <label htmlFor="image" className="imageIcon">
+                      {isloading ? (
+                        <LockResetIcon className="photoIcon photoIconDisabled" />
+                      ) : (
+                        <CenterFocusWeakIcon className="photoIcon " />
+                      )}
+                    </label>
+                    <input type="file" id="image" className="imageInput" onChange={handleuploadcoverimage}/>
+                  </div>
+                </div>
+              </div>
+              <div className="avatar-img">
+                <div className="avatarContainer">
+                  <img
+                    src={
+                      loggedinuser[0]?.profileImage
+                        ? loggedinuser[0].profileImage
+                        : user && user.photoURL
+                    }
+                    alt=""
+                    className="avatar"
+                  />
+                  <div className="hoverAvatarImage">
+                    <div className="imageIcon-tweetButton">
+                      <label htmlFor="profileImage" className="imageIcon">
+                        {isloading ? (
+                          <LockResetIcon className="photoIcon photoIconDisabled" />
+                        ) : (
+                          <CenterFocusWeakIcon className="photoIcon " />
+                        )}
+                      </label>
+                      <input
+                        type="file"
+                        id="profileImage"
+                        className="imageInput"
+                        onChange={handleuploadprofileimage}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="userInfo">
+                  <div>
+                    <h3 className="heading-3">
+                      {loggedinuser[0]?.name
+                        ? loggedinuser[0].name
+                        : user && user.displayname}
+                    </h3>
+                    <p className="usernameSection">@{username}</p>
+                  </div>
+                  <Editprofile user={user} loggedinuser={loggedinuser} />
+                </div>
+                <div className="infoContainer">
+                  {loggedinuser[0]?.bio ? <p>{loggedinuser[0].bio}</p> : ""}
+                  <div className="locationAndLink">
+                    {loggedinuser[0]?.location ? (
+                      <p className="subInfo">
+                        <MyLocationIcon /> {loggedinuser[0].location}
+                      </p>
+                    ) : (
+                      ""
+                    )}
+                    {loggedinuser[0]?.website ? (
+                      <p className="subInfo link">
+                        <AddLinkIcon /> {loggedinuser[0].website}
+                      </p>
+                    ) : (
+                      ""
+                    )}
+                  </div>
+                </div>
+                <h4 className="tweetsText">Tweets</h4>
+                <hr />
+              </div>
+              {post.map((p) => (
+                <Posts key={p._id} p={p} />
+              ))}
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Mainprofile;

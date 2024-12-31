@@ -1,0 +1,85 @@
+
+.login-container {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.image-container{
+    grid-column: 1;
+}
+
+.form-container{
+    grid-column: 2;
+    display: flex;
+    align-items: center;
+    width: 450px;
+    height: 600px;
+    /* border: 2px solid black; */
+}
+
+.form-content{
+    width: fit-content;
+    display: flex;
+    flex-direction: column;
+    align-items:baseline;
+    margin-left: 40px;
+}
+
+.Twittericon{
+    display: block;
+    width: 50px;
+    height: 50px;
+    color: var(--twitter-color);
+    margin-top: 25px;
+}
+.heading{
+    font-size: 3.2rem;
+    font-weight: 600;
+}
+
+.heading1 {
+    font-size: 2rem;
+    font-weight: 550;
+}
+
+.signup-form{
+    display: flex;
+    flex-direction: column;
+    align-items: baseline;
+    margin: 15px 0px;
+}
+
+.input-field{
+    border: 1.8px solid #5a5a5a;
+    border-radius: 25px;
+    width: 300px;
+    padding: 5px 10px;
+    margin-bottom: 10px;
+}
+
+.input-field::placeholder {
+    color: #5a5a5a;
+}
+
+.btn{
+    background-color: var(--twitter-color);
+    color: white;
+    padding: 5px 20px;
+    border-radius: 25px;
+}
+
+hr{
+    border-top-width: 2px;
+    width: 300px;
+    color: #1e1e1e;
+    margin-bottom: 15px;
+}
+
+.google-button, .login-link {
+    padding-left: 30px;
+    margin-bottom: 5px;
+}
+

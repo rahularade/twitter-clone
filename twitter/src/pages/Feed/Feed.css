@@ -1,0 +1,26 @@
+.feed {
+  flex: 0.6;
+    text-align: left;
+    padding: 0 15px;
+    height: 92vh;
+    overflow-y: scroll;
+}
+
+.feed::-webkit-scrollbar {
+    display: none;
+  }
+
+.feed-header {
+    position: sticky;
+    top: 0;
+    background-color: #fff;
+    z-index: 100;
+    padding: 15px;
+    border-bottom: 1px solid var(--twitter-background2);
+  }
+  
+  .feed-header h2 {
+    font-size: 20px;
+    font-weight: 800;
+    font-family: Arial, sans-serif;
+  }
